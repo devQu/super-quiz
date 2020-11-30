@@ -5,12 +5,44 @@ import classes from './Quiz.module.css';
 class Quiz extends Component {
 
     state = {
-        answers: [
-            {text: "Первый ответ"},
-            {text: "Второй ответ"},
-            {text: "Третий ответ"}, 
-            {text: "Четвёртый ответ"}
+        currentQuestion: 0,
+        quiz: [
+            {
+                answers: [
+                    {id: 1, text: "Первый ответ"},
+                    {id: 2, text: "Второй ответ"},
+                    {id: 3, text: "Третий ответ"}, 
+                    {id: 4, text: "Четвёртый ответ"}
+                ],
+                reponse: 2,
+                question: "Pourquoi je suis content ?"
+            },
+            {
+                answers: [
+                    {id: 1, text: "Первый ответ"},
+                    {id: 2, text: "Второй ответ"},
+                    {id: 3, text: "Третий ответ"}, 
+                    {id: 4, text: "Четвёртый ответ"}
+                ],
+                reponse: 3,
+                question: "Ou se trouve St. Petersbourgh ?"
+            },
+            {
+                answers: [
+                    {id: 1, text: "Первый ответ"},
+                    {id: 2, text: "Второй ответ"},
+                    {id: 3, text: "Третий ответ"}, 
+                    {id: 4, text: "Четвёртый ответ"}
+                ],
+                reponse: 2,
+                question: "Et comment faire ca.. ?"
+            }
         ]
+    }
+
+    prendreReponse = rep => {
+        console.log(rep)
+        this.setState({currentQuestion: this.state.currentQuestion + 1})
     }
 
     render() {
@@ -18,7 +50,13 @@ class Quiz extends Component {
             <div className={classes.Quiz}>
                 <div className={classes.QuizWrapper}>
                     <h1>Little quiz!</h1>
-                    <ActiveQuiz answers={this.state.answers} />
+                    <ActiveQuiz 
+                        answers = {this.state.quiz[this.state.currentQuestion].answers}
+                        question = {this.state.quiz[this.state.currentQuestion].question}
+                        count = {this.state.quiz.length}
+                        currentQuestion = {this.state.currentQuestion + 1}
+                        getReponse = {this.prendreReponse}
+                    />
                 </div>
             </div>
         )
