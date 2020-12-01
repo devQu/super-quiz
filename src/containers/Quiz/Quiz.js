@@ -6,6 +6,7 @@ class Quiz extends Component {
 
     state = {
         currentQuestion: 0,
+        result: null,
         quiz: [
             {
                 answers: [
@@ -41,8 +42,27 @@ class Quiz extends Component {
     }
 
     prendreReponse = rep => {
+        if (this.state.quiz[this.state.currentQuestion].reponse === rep) {
+            this.setResult(rep, true)
+            const timeout = window.setTimeout(() => {
+                if (this.state.currentQuestion + 1 === this.state.quiz.length) {
+                    console.log("FIN!")
+                } else {
+                    this.setState({
+                        currentQuestion: this.state.currentQuestion + 1,
+                        result: null
+                    })
+                }
+                window.clearTimeout(timeout)
+            }, 1000)
+        } else {
+            this.setResult(rep, false)
+        }
         console.log(rep)
-        this.setState({currentQuestion: this.state.currentQuestion + 1})
+    }
+
+    setResult = (rep, res) => {
+        this.setState({result: {[rep]: res}})
     }
 
     render() {
@@ -55,6 +75,7 @@ class Quiz extends Component {
                         question = {this.state.quiz[this.state.currentQuestion].question}
                         count = {this.state.quiz.length}
                         currentQuestion = {this.state.currentQuestion + 1}
+                        resultStatus = {this.state.result}
                         getReponse = {this.prendreReponse}
                     />
                 </div>

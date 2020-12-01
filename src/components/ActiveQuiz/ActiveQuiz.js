@@ -9,11 +9,12 @@ const ActiveQuiz = props => (
                 <strong>{props.currentQuestion}.&nbsp;</strong>
                 {props.question}
             </span>
-        <small>{props.currentQuestion} из {props.count}</small>
+            <small>{props.currentQuestion} из {props.count}</small>
         </p>
         <AnswersList 
             answers={props.answers} 
             getReponse = {props.getReponse}
+            resultStatus = {props.resultStatus}
         />
     </div>
 )

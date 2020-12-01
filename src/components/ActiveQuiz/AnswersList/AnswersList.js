@@ -10,6 +10,7 @@ const AnswersList = props => (
                     key = {index}
                     ans = {ans}
                     onReponseClick = {props.getReponse}
+                    result = {props.resultStatus}
                 />
             )
         }) }
