@@ -1,0 +1,18 @@
+.FinalQuiz {
+    border: 2px solid #fff;
+    border-radius: 5px;
+    display: block;
+    color: #fff;
+    margin: 0 10px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+.FinalQuiz ul {
+    list-style: none;
+}
+.success {
+    color: #2cff2c;
+}
+.error {
+    color: red;
+}

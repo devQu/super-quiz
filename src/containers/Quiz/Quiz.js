@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ActiveQuiz from '../../components/ActiveQuiz/ActiveQuiz';
+import FinalQuiz from '../../components/FinalQuiz/FinalQuiz';
 import classes from './Quiz.module.css';
 
 class Quiz extends Component {
@@ -7,6 +8,7 @@ class Quiz extends Component {
     state = {
         currentQuestion: 0,
         result: null,
+        finalStatus: false,
         quiz: [
             {
                 answers: [
@@ -41,12 +43,12 @@ class Quiz extends Component {
         ]
     }
 
-    prendreReponse = rep => {
-        if (this.state.quiz[this.state.currentQuestion].reponse === rep) {
-            this.setResult(rep, true)
+    prendreReponse = idClick => {
+        if (this.state.quiz[this.state.currentQuestion].reponse === idClick) {
+            this.setResult(idClick, true)
             const timeout = window.setTimeout(() => {
                 if (this.state.currentQuestion + 1 === this.state.quiz.length) {
-                    console.log("FIN!")
+                    this.setState({finalStatus: true})
                 } else {
                     this.setState({
                         currentQuestion: this.state.currentQuestion + 1,
@@ -56,13 +58,12 @@ class Quiz extends Component {
                 window.clearTimeout(timeout)
             }, 1000)
         } else {
-            this.setResult(rep, false)
+            this.setResult(idClick, false)
         }
-        console.log(rep)
     }
 
-    setResult = (rep, res) => {
-        this.setState({result: {[rep]: res}})
+    setResult = (idClick, res) => {
+        this.setState({result: {[idClick]: res}})
     }
 
     render() {
@@ -70,14 +71,19 @@ class Quiz extends Component {
             <div className={classes.Quiz}>
                 <div className={classes.QuizWrapper}>
                     <h1>Little quiz!</h1>
-                    <ActiveQuiz 
-                        answers = {this.state.quiz[this.state.currentQuestion].answers}
-                        question = {this.state.quiz[this.state.currentQuestion].question}
-                        count = {this.state.quiz.length}
-                        currentQuestion = {this.state.currentQuestion + 1}
-                        resultStatus = {this.state.result}
-                        getReponse = {this.prendreReponse}
-                    />
+                    {this.state.finalStatus
+                        ? <FinalQuiz
+                            count = {this.state.quiz.length}    
+                        />
+                        : <ActiveQuiz 
+                            answers = {this.state.quiz[this.state.currentQuestion].answers}
+                            question = {this.state.quiz[this.state.currentQuestion].question}
+                            count = {this.state.quiz.length}
+                            currentQuestion = {this.state.currentQuestion + 1}
+                            resultStatus = {this.state.result}
+                            getReponse = {this.prendreReponse}
+                        /> 
+                    }
                 </div>
             </div>
         )
