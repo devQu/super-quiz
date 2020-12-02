@@ -8,6 +8,7 @@ class Quiz extends Component {
     state = {
         currentQuestion: 0,
         result: null,
+        resultObj: {},
         finalStatus: false,
         quiz: [
             {
@@ -45,7 +46,7 @@ class Quiz extends Component {
 
     prendreReponse = idClick => {
         if (this.state.quiz[this.state.currentQuestion].reponse === idClick) {
-            this.setResult(idClick, true)
+            this.setResult(idClick, true, this.state.currentQuestion)
             const timeout = window.setTimeout(() => {
                 if (this.state.currentQuestion + 1 === this.state.quiz.length) {
                     this.setState({finalStatus: true})
@@ -58,24 +59,41 @@ class Quiz extends Component {
                 window.clearTimeout(timeout)
             }, 1000)
         } else {
-            this.setResult(idClick, false)
+            this.setResult(idClick, false, this.state.currentQuestion)
         }
     }
 
-    setResult = (idClick, res) => {
-        this.setState({result: {[idClick]: res}})
+    setResult = (idClick, res, curQ) => {
+        this.setState({
+            result: {[idClick]: res}
+        })
+        if (curQ === Object.keys(this.state.resultObj).length) {
+            this.setState({resultObj: {...this.state.resultObj, [curQ]:res}})
+        }
+    }
+
+    annuler = () => {
+        this.setState({
+            finalStatus: false,
+            result: null,
+            currentQuestion: 0,
+            resultObj: {}
+        })
     }
 
     render() {
         return (
             <div className={classes.Quiz}>
                 <div className={classes.QuizWrapper}>
-                    <h1>Little quiz!</h1>
+                    <h1>Super quiz!</h1>
                     {this.state.finalStatus
-                        ? <FinalQuiz
-                            count = {this.state.quiz.length}    
+                        ? <FinalQuiz // resultat final
+                            count = {this.state.quiz.length}
+                            annuler = {this.annuler}
+                            resObj = {this.state.resultObj}
+                            quiz = {this.state.quiz}
                         />
-                        : <ActiveQuiz 
+                        : <ActiveQuiz // question actuelle
                             answers = {this.state.quiz[this.state.currentQuestion].answers}
                             question = {this.state.quiz[this.state.currentQuestion].question}
                             count = {this.state.quiz.length}
