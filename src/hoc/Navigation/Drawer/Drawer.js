@@ -1,10 +1,15 @@
 import React, {Component} from 'react';
 import classes from './Drawer.module.css';
 import Obscur from '../../../components/UI/Obscur/Obscur';
+import { NavLink } from 'react-router-dom';
 
 class Drawer extends Component {
 
-    point = [1,2,3]
+    point = [
+        {to: '/', exact: true, label: 'List'},
+        {to: '/auth', exact: false, label: 'Auth'},
+        {to: '/quiz-creator', exact: false, label: 'Creer un quiz'}
+    ]
 
     render() {
 
@@ -20,7 +25,14 @@ class Drawer extends Component {
                         {this.point.map((item, index) => {
                             return (
                             <li key={index}>
-                                <a>{item}</a>
+                                <NavLink 
+                                    to={item.to} 
+                                    exact={item.exact}
+                                    onClick={this.props.onObscureHandler}
+                                    activeClassName={classes.active}
+                                >
+                                    {item.label}
+                                </NavLink>
                             </li>
                             )
                         })}

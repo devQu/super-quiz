@@ -1,6 +1,7 @@
 import React from 'react';
 import classes from './FinalQuiz.module.css';
 import Button from '../UI/Button/Button';
+import { Link } from 'react-router-dom';
 
 const FinalQuiz = props => {
     let res = Object.values(props.resObj).reduce((acc, item) => {if (item) acc++; return acc;}, 0) // bonnes reponses
@@ -21,7 +22,9 @@ const FinalQuiz = props => {
             </ul>
             <p>Vous avez correctement répondu à {res} question sur {props.count}.</p>
             <Button type="primary" onClick={props.annuler}>Recommencer !</Button>
-            {/* <button onClick={props.annuler}>Recommencer !</button> */}
+            <Link to="/">
+                <Button type="default">Back to the list</Button>                
+            </Link>
         </div>
     )
 }
