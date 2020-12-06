@@ -7,8 +7,8 @@ function isError({valid, touched, shouldValidate}) {
 
 const Input = props => {
 
-    const forId = `${props.type}-${Math.random().toString().substr(2, 5)}`
     const typeDef = props.type || 'text'
+    const forId = `${typeDef}-${Math.random().toString().substr(2, 5)}`
     let cls = [classes.Input]
 
     if (isError(props)) cls.push(classes.incorrect) // Add class

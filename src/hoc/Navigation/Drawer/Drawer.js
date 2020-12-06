@@ -8,7 +8,7 @@ class Drawer extends Component {
     point = [
         {to: '/', exact: true, label: 'List'},
         {to: '/auth', exact: false, label: 'Auth'},
-        {to: '/quiz-creator', exact: false, label: 'Creer un quiz'}
+        {to: '/quiz-create', exact: false, label: 'Creer un quiz'}
     ]
 
     render() {

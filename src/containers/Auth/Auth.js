@@ -6,6 +6,7 @@ import Input from '../../components/UI/Input/Input';
 class Auth extends Component {
 
     state = {
+        isFormValid: true,
         formControls: {
             email: {
                 value: '',
@@ -64,13 +65,20 @@ class Auth extends Component {
             }
         }
         copyformControls[form] = currentControls
-        this.setState({formControls: copyformControls})
 
+        let isFormSuccess = true
+        Object.keys(copyformControls).forEach((name) => {
+            console.log("valid: "+copyformControls[name].valid, " isFormSuccess: "+isFormSuccess)
+            isFormSuccess = copyformControls[name].valid && isFormSuccess
+        })
+
+        this.setState({formControls: copyformControls, isFormValid: isFormSuccess})
     }
 
     renderInputs() {
         return Object.keys(this.state.formControls).map((form, index) => {
             let control = this.state.formControls[form]
+            // keys: value, type, label, errorMessage, valid, touched, validation (required, email, minLength)
             return <Input
                 key={`${form}-${index}`}
                 type={control.type}
@@ -92,8 +100,8 @@ class Auth extends Component {
                     <h1>Auth</h1>
                     <form onSubmit={this.onSubmit}>
                         { this.renderInputs() } {/* Run yourself */}
-                        <Button type="primary" onClick={this.onLoginHandler}>Auth</Button>
-                        <Button type="default" onClick={this.onRegisterHandler}>Reg</Button>
+                        <Button type="primary" disabled={!this.state.isFormValid} onClick={this.onLoginHandler}>Auth</Button>
+                        <Button type="default" disabled={!this.state.isFormValid} onClick={this.onRegisterHandler}>Reg</Button>
                     </form>
                 </div>
             </div>
