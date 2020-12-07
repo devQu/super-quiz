@@ -17,8 +17,9 @@ class QuizCreator extends Component {
     }
 
     state = {
+        quiz: [],
         correctAnswer: 1,
-        isFormValid: true,
+        isFormValid: false,
         formControls: {
             question: this.processingInput({label: 'Enter your question', value: ''}, {required: true}),
             option1: this.processingInput({label: "First answer", value: ''}, {required: true}),
@@ -80,6 +81,23 @@ class QuizCreator extends Component {
         this.setState({ correctAnswer: +e.target.value })
     }
 
+    addQuiz = () => {
+        const { question, option1, option2, option3, option4 } = this.state.formControls
+        let quiz = this.state.quiz.concat()
+        let quizElement = { 
+            id: this.state.quiz.length + 1,
+            question: question.value,
+            option1: option1.value,
+            option2: option2.value,
+            option3: option3.value,
+            option4: option4.value,
+            correctAnswer: this.state.correctAnswer
+        }
+        quiz.push(quizElement)
+        this.setState({ quiz })
+        console.log(quiz)
+    }
+
     render() {
         return (
             <div className={classes.QuizCreator}>
@@ -93,8 +111,15 @@ class QuizCreator extends Component {
                             options={[1,2,3,4]} 
                         />
                     </form>
-                    <Button disabled={!this.state.isFormValid} type="primary">Add a question</Button>
-                    <Button type="default">Finish</Button>
+                    <Button 
+                        disabled={!this.state.isFormValid} 
+                        type="primary"
+                        onClick={this.addQuiz}>Add a question
+                    </Button>
+                    <Button 
+                        disabled={!this.state.quiz.length}
+                        type="default">Finish
+                    </Button>
                 </div>
             </div>
         )
