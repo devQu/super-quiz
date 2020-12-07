@@ -68,7 +68,6 @@ class Auth extends Component {
 
         let isFormSuccess = true
         Object.keys(copyformControls).forEach((name) => {
-            console.log("valid: "+copyformControls[name].valid, " isFormSuccess: "+isFormSuccess)
             isFormSuccess = copyformControls[name].valid && isFormSuccess
         })
 
