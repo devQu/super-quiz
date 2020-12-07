@@ -3,6 +3,7 @@ import classes from './QuizCreator.module.css';
 import Button from '../../components/UI/Button/Button';
 import Input from '../../components/UI/Input/Input';
 import Select from '../../components/UI/Select/Select';
+import axios from 'axios';
 
 class QuizCreator extends Component {
 
@@ -81,7 +82,8 @@ class QuizCreator extends Component {
         this.setState({ correctAnswer: +e.target.value })
     }
 
-    addQuiz = () => {
+    addQuiz = event => {
+        event.preventDefault()
         const { question, option1, option2, option3, option4 } = this.state.formControls
         let quiz = this.state.quiz.concat()
         let quizElement = { 
@@ -98,6 +100,15 @@ class QuizCreator extends Component {
         console.log(quiz)
     }
 
+    createQuiz = async event => {
+        event.preventDefault()
+        try {
+            await axios.post('https://little-quiz-cc822-default-rtdb.firebaseio.com/quizes.json', this.state.quiz)
+        } catch(err) {
+            console.error(err)
+        }
+    }
+
     render() {
         return (
             <div className={classes.QuizCreator}>
@@ -110,16 +121,17 @@ class QuizCreator extends Component {
                             onChange={this.onSelectChange} 
                             options={[1,2,3,4]} 
                         />
+                        <Button 
+                            disabled={!this.state.isFormValid} 
+                            type="primary"
+                            onClick={this.addQuiz}>Add a question
+                        </Button>
+                        <Button 
+                            disabled={!this.state.quiz.length}
+                            type="default"
+                            onClick={this.createQuiz}>Finish
+                        </Button>
                     </form>
-                    <Button 
-                        disabled={!this.state.isFormValid} 
-                        type="primary"
-                        onClick={this.addQuiz}>Add a question
-                    </Button>
-                    <Button 
-                        disabled={!this.state.quiz.length}
-                        type="default">Finish
-                    </Button>
                 </div>
             </div>
         )
