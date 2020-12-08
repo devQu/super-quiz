@@ -49,7 +49,7 @@ class QuizCreator extends Component {
         formControls[form] = formElementControls
         // To block a button
         let isFormValidTemp = true
-        Object.keys(formControls).map(form => {
+        Object.keys(formControls).forEach(form => {
             isFormValidTemp = formControls[form].valid && isFormValidTemp
         })
 

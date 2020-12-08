@@ -2,30 +2,44 @@ import React, {Component} from 'react';
 import classes from './QuizList.module.css';
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
+import Loader from '../../components/UI/Loader/Loader';
 
 class QuizList extends Component {
 
+    state = {
+        loading: true,
+        quizList: []
+    }
+
     generateList() {
-        const listQuiz = [1, 2, 3]
-        return listQuiz.map((item, index) => {
+        return this.state.quizList.map((item, index) => {
             return (
                 <li key={index}>
-                    <NavLink to={'/quiz/' + item} >{index + 1}.&nbsp;TEST {item}</NavLink>
+                    <NavLink to={'/quiz/' + item} >TEST #&nbsp;{index + 1}</NavLink>
                 </li>
             )
         })
     }
 
-    // componentDidMount() {
-    //     axios.get('https://little-quiz-cc822-default-rtdb.firebaseio.com/title.json').then(res => { console.log(res) })
-    // }
+    async componentDidMount() { 
+        try {
+            const result = await axios.get('https://little-quiz-cc822-default-rtdb.firebaseio.com/quizes.json')
+            let quizList = []
+            Object.keys(result.data).forEach(element => {
+                quizList.push(element)
+            })
+            this.setState({ quizList, loading: false })
+        } catch (e) {
+            console.error(e)
+        }
+    }
 
     render() {
         return (
             <div className={classes.QuizList}>
                 <div>
                     <h1>List of tests</h1>
-                    <ul>{this.generateList()}</ul>
+                    { this.state.loading ? <Loader /> : <ul>{this.generateList()}</ul> }
                 </div>
             </div>
         )
