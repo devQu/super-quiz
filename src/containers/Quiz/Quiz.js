@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ActiveQuiz from '../../components/ActiveQuiz/ActiveQuiz';
 import FinalQuiz from '../../components/FinalQuiz/FinalQuiz';
 import classes from './Quiz.module.css';
+import axios from '../../axios/axios-conf';
 
 class Quiz extends Component {
 
@@ -10,38 +11,21 @@ class Quiz extends Component {
         result: null,
         resultObj: {},
         finalStatus: false,
-        quiz: [
-            {
-                answers: [
-                    {id: 1, text: "Первый ответ"},
-                    {id: 2, text: "Второй ответ"},
-                    {id: 3, text: "Третий ответ"}, 
-                    {id: 4, text: "Четвёртый ответ"}
-                ],
-                reponse: 2,
-                question: "Pourquoi je suis content ?"
-            },
-            {
-                answers: [
-                    {id: 1, text: "Первый ответ"},
-                    {id: 2, text: "Второй ответ"},
-                    {id: 3, text: "Третий ответ"}, 
-                    {id: 4, text: "Четвёртый ответ"}
-                ],
-                reponse: 3,
-                question: "Ou se trouve St. Petersbourgh ?"
-            },
-            {
-                answers: [
-                    {id: 1, text: "Первый ответ"},
-                    {id: 2, text: "Второй ответ"},
-                    {id: 3, text: "Третий ответ"}, 
-                    {id: 4, text: "Четвёртый ответ"}
-                ],
-                reponse: 2,
-                question: "Et comment faire ca.. ?"
-            }
-        ]
+        quiz: [{
+            answers: [],
+            question: '',
+            reponse: 1
+        }]
+    }
+
+    async componentDidMount() {
+        try {
+            const response = await axios.get(`/quizes/${this.props.match.params.id}.json`)
+            const quiz = response.data
+            this.setState({ quiz })
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     prendreReponse = idClick => {

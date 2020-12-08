@@ -3,7 +3,7 @@ import classes from './QuizCreator.module.css';
 import Button from '../../components/UI/Button/Button';
 import Input from '../../components/UI/Input/Input';
 import Select from '../../components/UI/Select/Select';
-import axios from 'axios';
+import axios from '../../axios/axios-conf';
 
 class QuizCreator extends Component {
 
@@ -89,11 +89,13 @@ class QuizCreator extends Component {
         let quizElement = { 
             id: this.state.quiz.length + 1,
             question: question.value,
-            option1: option1.value,
-            option2: option2.value,
-            option3: option3.value,
-            option4: option4.value,
-            correctAnswer: this.state.correctAnswer
+            answers: [
+                {id: 1, text: option1.value},
+                {id: 2, text: option2.value},
+                {id: 3, text: option3.value},
+                {id: 4, text: option4.value}
+            ],
+            reponse: this.state.correctAnswer
         }
         quiz.push(quizElement)
         this.setState({ quiz })
@@ -103,7 +105,7 @@ class QuizCreator extends Component {
     createQuiz = async event => {
         event.preventDefault()
         try {
-            await axios.post('https://little-quiz-cc822-default-rtdb.firebaseio.com/quizes.json', this.state.quiz)
+            await axios.post('/quizes.json', this.state.quiz)
         } catch(err) {
             console.error(err)
         }

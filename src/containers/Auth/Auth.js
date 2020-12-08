@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import classes from './Auth.module.css';
 import Button from '../../components/UI/Button/Button';
 import Input from '../../components/UI/Input/Input';
+import axios from 'axios';
+import key from '../../config/config';
 
 class Auth extends Component {
 
@@ -35,18 +37,35 @@ class Auth extends Component {
         }
     }
 
-    onLoginHandler() {
-        console.log("Login")
+    onLoginHandler = async () => {
+        const userData = {
+            email: this.state.formControls.email.value,
+            password: this.state.formControls.password.value,
+            returnSecureToken: true
+        }
+        try {
+            await axios.post(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${key}`, userData)
+        } catch (e) {
+            console.error(e)
+        }
     }
 
-    onRegisterHandler() {
-        console.log("Register")
+    onRegisterHandler = async () => {
+        const userData = {
+            email: this.state.formControls.email.value,
+            password: this.state.formControls.password.value,
+            returnSecureToken: true
+        }
+        try {
+            await axios.post(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${key}`, userData)
+        } catch (e) {
+            console.error(e)
+        }
     }
 
     onSubmit = e => e.preventDefault()
 
     onChangeHandler(e, form) {
-        console.log(form + ": " + e)
         let copyformControls = {...this.state.formControls}
         let currentControls = {...copyformControls[form]}
         currentControls.touched = true
