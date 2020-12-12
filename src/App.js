@@ -4,6 +4,7 @@ import QuizList from './containers/QuizList/QuizList';
 import QuizCreator from './containers/QuizCreator/QuizCreator';
 import Auth from './containers/Auth/Auth';
 import { Route, Switch } from 'react-router-dom';
+import { connect } from 'redux';
 
 function App() {
   return (
