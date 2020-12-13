@@ -22,6 +22,8 @@ export function prendreReponseQuiz(idClick) {
         const quiz = quizReducer.quiz
         const curQu = quizReducer.currentQuestion
         const resultObj = quizReducer.resultObj
+        console.log(resultObj)
+
         if (quiz[curQu].reponse === idClick) {
             dispatch(setResultQuiz(idClick, true, curQu, resultObj))
             const timeout = window.setTimeout(() => {
@@ -68,16 +70,13 @@ export function getListQuizes() {
                 quizList.push(element)
             })
             dispatch(quizSuccess(quizList))
-            // this.setState({ quizList, loading: false })
         } catch (e) {
             dispatch(quizError(e))
-            // console.error(e)
         }
     }
 }
 export function getItemQuiz(quizId) {
     return async dispatch => {
-        console.log(quizId)
         dispatch(quizStart())
         try {
             const response = await axios.get(`/quizes/${quizId}.json`)
