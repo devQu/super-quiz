@@ -36,7 +36,6 @@ class QuizList extends Component {
 }
 
 function mapStateToProps(state) {
-    console.log(state.quizReducer.quizList)
     return {
         loading: state.quizReducer.loading,
         quizList: state.quizReducer.quizList
