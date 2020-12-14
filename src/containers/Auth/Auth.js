@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import classes from './Auth.module.css';
 import Button from '../../components/UI/Button/Button';
 import Input from '../../components/UI/Input/Input';
-import axios from 'axios';
-import key from '../../config/config';
+import { connect } from 'react-redux';
+import { onAuthHandler } from '../../store/actions/auth';
 
 class Auth extends Component {
 
@@ -37,30 +37,14 @@ class Auth extends Component {
         }
     }
 
-    onLoginHandler = async () => {
+    onAuthControl = (event) => {
         const userData = {
             email: this.state.formControls.email.value,
             password: this.state.formControls.password.value,
             returnSecureToken: true
         }
-        try {
-            await axios.post(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${key}`, userData)
-        } catch (e) {
-            console.error(e)
-        }
-    }
-
-    onRegisterHandler = async () => {
-        const userData = {
-            email: this.state.formControls.email.value,
-            password: this.state.formControls.password.value,
-            returnSecureToken: true
-        }
-        try {
-            await axios.post(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${key}`, userData)
-        } catch (e) {
-            console.error(e)
-        }
+        {[...document.getElementsByTagName('input')].forEach(i => {i.value = ''})} // temporary ....
+        this.props.onAuthHandler(userData, event.target.innerText) // data transfer to the server
     }
 
     onSubmit = e => e.preventDefault()
@@ -117,9 +101,17 @@ class Auth extends Component {
                 <div>
                     <h1>Auth</h1>
                     <form onSubmit={this.onSubmit}>
-                        { this.renderInputs() } {/* Run yourself */}
-                        <Button type="primary" disabled={!this.state.isFormValid} onClick={this.onLoginHandler}>Auth</Button>
-                        <Button type="default" disabled={!this.state.isFormValid} onClick={this.onRegisterHandler}>Reg</Button>
+                        { this.renderInputs() } {/* render all inputs */}
+                        <Button 
+                            type="primary" 
+                            disabled={!this.state.isFormValid} 
+                            onClick={this.onAuthControl}>Auth
+                        </Button>
+                        <Button 
+                            type="default" 
+                            disabled={!this.state.isFormValid} 
+                            onClick={this.onAuthControl}>Reg
+                        </Button>
                     </form>
                 </div>
             </div>
@@ -127,4 +119,10 @@ class Auth extends Component {
     }
 }
 
-export default Auth;
+function mapDispatchToProps(dispatch) {
+    return {
+        onAuthHandler: (userData, ifLog) => dispatch(onAuthHandler(userData, ifLog))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(Auth);

@@ -3,7 +3,8 @@ import classes from './QuizCreator.module.css';
 import Button from '../../components/UI/Button/Button';
 import Input from '../../components/UI/Input/Input';
 import Select from '../../components/UI/Select/Select';
-import axios from '../../axios/axios-conf';
+import { connect } from 'react-redux';
+import { addQuestionQuiz, createQuestionQuiz } from '../../store/actions/create';
 
 class QuizCreator extends Component {
 
@@ -18,7 +19,7 @@ class QuizCreator extends Component {
     }
 
     state = {
-        quiz: [],
+        // Array quiz <---> initialState - props,
         correctAnswer: 1,
         isFormValid: false,
         formControls: {
@@ -84,31 +85,12 @@ class QuizCreator extends Component {
 
     addQuiz = event => {
         event.preventDefault()
-        const { question, option1, option2, option3, option4 } = this.state.formControls
-        let quiz = this.state.quiz.concat()
-        let quizElement = { 
-            id: this.state.quiz.length + 1,
-            question: question.value,
-            answers: [
-                {id: 1, text: option1.value},
-                {id: 2, text: option2.value},
-                {id: 3, text: option3.value},
-                {id: 4, text: option4.value}
-            ],
-            reponse: this.state.correctAnswer
-        }
-        quiz.push(quizElement)
-        this.setState({ quiz })
-        console.log(quiz)
+        this.props.addQuestionQuiz(this.state.formControls, this.state.correctAnswer) // add a current question
     }
 
-    createQuiz = async event => {
+    createQuiz = event => {
         event.preventDefault()
-        try {
-            await axios.post('/quizes.json', this.state.quiz)
-        } catch(err) {
-            console.error(err)
-        }
+        this.props.createQuestionQuiz()
     }
 
     render() {
@@ -129,7 +111,7 @@ class QuizCreator extends Component {
                             onClick={this.addQuiz}>Add a question
                         </Button>
                         <Button 
-                            disabled={!this.state.quiz.length}
+                            disabled={!this.props.quiz.length}
                             type="default"
                             onClick={this.createQuiz}>Finish
                         </Button>
@@ -140,4 +122,16 @@ class QuizCreator extends Component {
     }
 }
 
-export default QuizCreator;
+function mapStateToProps(state) {
+    return {
+        quiz: state.creactQuizReducer.quiz
+    }
+}
+function mapDispatchToProps(dispatch) {
+    return {
+        addQuestionQuiz: (form, answer) => dispatch(addQuestionQuiz(form, answer)),
+        createQuestionQuiz: () => dispatch(createQuestionQuiz())
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(QuizCreator);
