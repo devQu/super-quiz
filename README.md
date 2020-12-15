@@ -1,7 +1,16 @@
-## Quizes React App
+#Quizes React App
 
-> You need to add firebase app key in the directory **src/config.config.js**
+In this small project I used **React**, **redux**, firebase authentication system.
+> You need to add your own firebase app key in the directory **src/config/config.js**
+```javascript
+const keyFireBase = 'your key'
+export default keyFireBase;
+```
+
 
 ------------
 
-[DEMO](https://little-quiz-cc822.web.app/)
+Enjoy!
+------------
+
+[DEMO](https://little-quiz-cc822.web.app/) 
