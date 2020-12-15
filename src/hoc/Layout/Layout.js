@@ -20,8 +20,14 @@ class Layout extends Component {
     render() {
         return (
             <div className={classes.Layout}>
-                <Drawer onObscureHandler={this.onObscureHandler} isOpen={this.state.menu} />
-                <Menu onToggle={this.onMenuToggle} isOpen={this.state.menu} />
+                <Drawer 
+                    onObscureHandler={this.onObscureHandler} 
+                    isOpen={this.state.menu} 
+                />
+                <Menu 
+                    onToggle={this.onMenuToggle} 
+                    isOpen={this.state.menu} 
+                />
                 <main>
                     {this.props.children}
                 </main>
